@@ -1,0 +1,48 @@
+Accuracy: 70.0
+---------------------------------------------------------------------------
+NameError Traceback (most recent call last)
+Input In [84], in <cell line: 2>()
+ 1 tree.plot_tree(treeD)
+----> 2 plt.show()
+NameError: name 'plt' is not defined
+id diagnosis_result radius texture perimeter area smoothness compactness symmetry fractal_dimensio
+0 1 1 23 12 151 954 0.143 0.278 0.242 0.0
+1 2 0 9 13 133 1326 0.143 0.079 0.181 0.0
+2 3 1 21 27 130 1203 0.125 0.160 0.207 0.0
+3 4 1 14 16 78 386 0.070 0.284 0.260 0.0
+4 5 1 9 19 135 1297 0.141 0.133 0.181 0.0
+... ... ... ... ... ... ... ... ... ...
+95 96 1 23 16 132 1264 0.091 0.131 0.210 0.0
+96 97 0 22 14 78 451 0.105 0.071 0.190 0.0
+97 98 0 19 27 62 295 0.102 0.053 0.135 0.0
+98 99 0 21 24 74 413 0.090 0.075 0.162 0.0
+99 100 1 16 27 94 643 0.098 0.114 0.188 0.0
+100 rows × 10 columns
+In [70]:
+import pandas as pds
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.tree import export_graphviz
+import pydotplus
+from IPython.display import Image
+import numpy as no
+In [71]:
+myProstateData = pds.read_csv("Prostate_Cancer.csv")
+myProstateData['diagnosis_result'] = [1 if element == 'M' else 0 for element in myProsta
+myProstateData
+Out[71]: In [73]:
+xProstate = myProstateData.drop(['diagnosis_result'], axis=1)
+yProstate = myProstateData['diagnosis_result'].values
+XtrainD, XtestD, ytrainD, ytestD = train_test_split(xProstate, yProstate, test_size=0.2,
+In [82]:
+treeD = DecisionTreeClassifier ()
+treeD.fit (XtrainD, ytrainD)
+y_pred = treeD.predict(XtestD)
+In [83]:
+from sklearn.metrics import accuracy_score
+accuracyTree = accuracy_score (ytestD, y_pred) * 100
+print("Accuracy:" , accuracyTree)
+In [84]:
+tree.plot_tree(treeD)
+plt.show()
+In [ ]:
