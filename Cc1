@@ -1,0 +1,50 @@
+id diagnosis_result radius texture perimeter area smoothness compactness symmetry fractal_dimension
+0 1 M 23 12 151 954 0.143 0.278 0.242 0.079
+1 2 B 9 13 133 1326 0.143 0.079 0.181 0.057
+2 3 M 21 27 130 1203 0.125 0.160 0.207 0.060
+3 4 M 14 16 78 386 0.070 0.284 0.260 0.097
+4 5 M 9 19 135 1297 0.141 0.133 0.181 0.059
+id diagnosis_result radius texture perimeter area smoothness compactness symmetry fractal_dimensio
+0 1 1 23 12 151 954 0.143 0.278 0.242
+1 2 0 9 13 133 1326 0.143 0.079 0.181
+2 3 1 21 27 130 1203 0.125 0.160 0.207
+3 4 1 14 16 78 386 0.070 0.284 0.260
+4 5 1 9 19 135 1297 0.141 0.133 0.181
+... ... ... ... ... ... ... ... ... ...
+95 96 1 23 16 132 1264 0.091 0.131 0.210
+96 97 0 22 14 78 451 0.105 0.071 0.190
+97 98 0 19 27 62 295 0.102 0.053 0.135
+98 99 0 21 24 74 413 0.090 0.075 0.162
+99 100 1 16 27 94 643 0.098 0.114 0.188
+100 rows × 10 columns
+In [34]:
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+In [35]:
+datafile = pd.read_csv('Prostate_Cancer.csv')
+datafile.head()
+Out[35]: In [42]:
+from sklearn.preprocessing import LabelEncoder
+datafile['diagnosis_result'] = [1 if element == 'M' else 0 for element in datafile['diag
+encoder = LabelEncoder()
+data['diagnosis_result'] = encoder.fit_transform(data['diagnosis_result'])
+data.head(100)
+Out[42]: In [43]:
+X = data.drop(columns = ['fractal_dimension'])
+Y = data['fractal_dimension']
+X_traindata, X_testdata, y_traindata, y_testdata = train_test_split(X,Y, test_size =0.3
+In [44]:
+knn = KNeighborsClassifier(n_neighbors = 8)
+In [45]: knn.fit(X_traindata, y_traindata)
+KNeighborsClassifier(n_neighbors=8)
+Out[45]:
+Accuracy with k=8 0.3333333333333333
+In [46]:
+y_pred = knn.predict(X_testdata)
+from sklearn.metrics import accuracy_score
+print("Accuracy with k=8", accuracy_score(y_testdata, y_pred) * 10)
+In [ ]: In [ ]:
+▾ KNeighborsClassifier
+KNeighborsClassifier(n_neighbors=8)
