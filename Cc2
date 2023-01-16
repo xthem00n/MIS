@@ -1,0 +1,59 @@
+Text(0.5, 1.0, 'Correlation On prostate cancer Classes')
+id diagnosis_result radius texture perimeter area smoothness compactness symmetry fractal_dimension
+0 1 M 23 12 151 954 0.143 0.278 0.242 0.079
+1 2 B 9 13 133 1326 0.143 0.079 0.181 0.057
+2 3 M 21 27 130 1203 0.125 0.160 0.207 0.060
+3 4 M 14 16 78 386 0.070 0.284 0.260 0.097
+4 5 M 9 19 135 1297 0.141 0.133 0.181 0.059
+id diagnosis_result radius texture perimeter area smoothness compactness symmetry fractal_dimension
+0 1 0 23 12 151 954 0.143 0.278 0.242 26
+1 2 0 9 13 133 1326 0.143 0.079 0.181 4
+2 3 0 21 27 130 1203 0.125 0.160 0.207 7
+3 4 0 14 16 78 386 0.070 0.284 0.260 31
+4 5 0 9 19 135 1297 0.141 0.133 0.181 6
+In [222…
+import numpy as nump
+import pandas as pds
+import matplotlib.pyplot as pltt
+import seaborn as snsb
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+In [223…
+datafile = pd.read_csv('Prostate_Cancer.csv')
+datafile.head()
+Out[223]: In [236…
+datafile['diagnosis_result'] = [1 if element == 'M' else 0 for element in datafile['diag
+lencoder = LabelEncoder()
+datafile['diagnosis_result'] = lencoder.fit_transform(datafile['diagnosis_result'])
+datafile.drop(['id'], axis=1)
+datafile.head()
+Out[236]: In [240…
+pltt.figure(1)
+sns.heatmap(datafile.corr())
+pltt.title('Correlation On prostate cancer Classes')
+Out[240]:
+ precision recall f1-score support
+In [249…
+Xvalue = datafile.drop(['diagnosis_result'], axis=1)
+Yvalle = datafile['diagnosis_result'].values
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(Xvalue, Yvalle, test_size=0.25, train_si
+In [257…
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+cls = DecisionTreeClassifier()
+cls.fit(Xtrain, Ytrain)
+y_pred = cls.predict(Xtest)
+#a reviow of the classifier result
+print(classification_report(Ytest, y_pred))
+print(confusion_matrix(Ytest, y_pred))
+#view the accuracy
+from sklearn.metrics import accuracy_score
+print('accuracy is',accuracy_score(y_pred,Ytest))
+ 0 1.00 1.00 1.00 25
+ accuracy 1.00 25
+ macro avg 1.00 1.00 1.00 25
+weighted avg 1.00 1.00 1.00 25
+[[25]]
+accuracy is 1.0
+In [ ]: In [ ]:
